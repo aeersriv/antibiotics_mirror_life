@@ -1,31 +1,40 @@
-import sys
+# Pedroni et al. (c) 2025
+# Creative Commons Attribution 4.0 International
+#
+# ÆĒR ŚRĪV (c) 2025
+# GNU General Public License v 3 (GPLv3)
+#
 
+""" The original script was refactored such that it can be
+used as module, not as a script as the original author once
+intended.
 
-def invert_pdb_coordinates(pdb_file):
-    '''
-    1. Reads a PDB file, inverts the signs of the x, y, z coordinates in HETATM and ATOM lines.
-    2. Writes a new PDB file with inverted coordinates named with the same prefix and "_specular.pdb suffix".
-    '''
-    specular_pdb_file = f'{pdb_file[:-4]}pecular.pdb'
-    with open(pdb_file, 'r') as infile, open(specular_pdb_file, 'w') as outfile:
-        for line in infile:
-            if line.startswith('HETATM') or line.startswith('ATOM'):
-                x = float(line[30:38])
-                x = -x
-                y = float(line[38:46])
-                y = -y
-                z = float(line[46:54])
-                z = -z
-                newline = f'{line[:30]}{x:8.3f}{y:8.3f}{z:8.3f}{line[54:]}' # line containing coordinates with inverted signs
-                outfile.write(newline)
+This allows it to be used as an import for further processing
+such as in Jupyter notebooks or other scripts.
+"""
+
+def invert_pdb_coordinates(d_pdb_file):
+    """
+    1. Reads a PDB file pdb_file: str, inverts the signs of the
+    x, y, z coordinates in HETATM and ATOM lines.
+    2. Writes a new PDB file with inverted coordinates named with
+    prefix L- and .pdb file extension
+    """
+
+    l_pdb_file = f"L-{d_pdb_file[1:]}"
+    with (
+            open(d_pdb_file, "r", encoding="utf-8") as d_pdb,
+            open(l_pdb_file, "w", encoding="utf-8") as l_pdb
+        ):
+        for line in d_pdb:
+            if line.startswith("HETATM") or line.startswith("ATOM"):
+                # invert the signs to transpose the coordinates of
+                # the given peptide structure to "mirror form."
+                x = -1.0 * float(line[30:38])
+                y = -1.0 * float(line[38:46])
+                z = -1.0 * float(line[46:54])
+                newline = f"{line[:30]}{x:8.3f}{y:8.3f}{z:8.3f}{line[54:]}"
+                # line containing coordinates with inverted signs
+                l_pdb.write(newline)
             else:
-                outfile.write(line) # Write other lines unchanged
-
-            print(f'Specular PDB file saved as {specular_pdb_file}')
-
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print('Usage: python3 pdb_mirror.py <pdb_file.pdb>')
-        sys.exit(1)
-    pdb_file = sys.argv[1]
-    invert_pdb_coordinates(pdb_file)
+                l_pdb.write(line)
