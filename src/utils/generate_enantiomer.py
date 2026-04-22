@@ -4,16 +4,26 @@
 # ÆĒR ŚRĪV (c) 2025
 # GNU General Public License v 3 (GPLv3)
 #
+# The original script was refactored such that it can be
+# used as module, not as a script as the original author once
+# intended.
+#
+# This allows it to be used as an import for further processing
+# such as in Jupyter notebooks or other scripts.
 
-""" The original script was refactored such that it can be
-used as module, not as a script as the original author once
-intended.
+from rdkit.Chem import Mol
 
-This allows it to be used as an import for further processing
-such as in Jupyter notebooks or other scripts.
-"""
+def invert_mol(native_mol: Mol) -> Mol:
+    """
+    """
+    mirror_mol = native_mol
+    for atom in native_mol.GetAtoms():
+        atom.InvertChirality()
 
-def invert_pdb_coordinates(d_pdb_file):
+    return mirror_mol
+
+
+def invert_pdb(native_pdb: str) -> None:
     """
     1. Reads a PDB file pdb_file: str, inverts the signs of the
     x, y, z coordinates in HETATM and ATOM lines.
@@ -21,10 +31,10 @@ def invert_pdb_coordinates(d_pdb_file):
     prefix L- and .pdb file extension
     """
 
-    l_pdb_file = f"L-{d_pdb_file[1:]}"
+    mirror_pdb = f"L-{native_pdb[1:]}"
     with (
-            open(d_pdb_file, "r", encoding="utf-8") as d_pdb,
-            open(l_pdb_file, "w", encoding="utf-8") as l_pdb
+            open(native_pdb, "r", encoding="utf-8") as d_pdb,
+            open(mirror_pdb, "w", encoding="utf-8") as l_pdb
         ):
         for line in d_pdb:
             if line.startswith("HETATM") or line.startswith("ATOM"):
@@ -38,3 +48,4 @@ def invert_pdb_coordinates(d_pdb_file):
                 l_pdb.write(newline)
             else:
                 l_pdb.write(line)
+
