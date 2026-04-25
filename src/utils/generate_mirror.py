@@ -1,3 +1,4 @@
+#
 # Pedroni et al. (c) 2025
 # Creative Commons Attribution 4.0 International
 #
@@ -11,10 +12,18 @@
 # This allows it to be used as an import for further processing
 # such as in Jupyter notebooks or other scripts.
 
-from rdkit.Chem import Mol
+from rdkit.Chem.rdchem import Mol
+
 
 def invert_mol(native_mol: Mol) -> Mol:
-    """
+    """Generate enantiomorph of the native molecule.
+
+    Args:
+        native_mol (Mol): RDkit.Chem.rdchem.Mol instance
+
+    Returns:
+        Mol: RDkit.Chem.rdchem.Mol instance instance of
+        mirror of the native mol
     """
     mirror_mol = native_mol
     for atom in native_mol.GetAtoms():
@@ -23,15 +32,16 @@ def invert_mol(native_mol: Mol) -> Mol:
     return mirror_mol
 
 
-def invert_pdb(native_pdb: str) -> None:
-    """
-    1. Reads a PDB file pdb_file: str, inverts the signs of the
-    x, y, z coordinates in HETATM and ATOM lines.
-    2. Writes a new PDB file with inverted coordinates named with
-    prefix L- and .pdb file extension
+def invert_pdb(native_pdb: str, path: str) -> None:
+    """Read a PDB file, and manually invert the sign of
+    each x, y, and z coordinates in HETATM and ATOM lines.
+
+    Args:
+        native_pdb (str): file path of native target.
+        path (str): output where to save the mirror target.
     """
 
-    mirror_pdb = f"L-{native_pdb[1:]}"
+    mirror_pdb = f"{path}/L-{native_pdb.split('/')[-1]}"
     with (
             open(native_pdb, "r", encoding="utf-8") as d_pdb,
             open(mirror_pdb, "w", encoding="utf-8") as l_pdb
