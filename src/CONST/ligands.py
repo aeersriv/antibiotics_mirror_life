@@ -17,7 +17,7 @@ class Ligands:
             "tigecycline",
             "doxycycline",
             "tetracycline",
-            "Chlortetracycline",
+            "chlortetracycline",
             "azithromycin", # macrolides
             "erythromycin",
             "clarithromycin",
@@ -59,7 +59,7 @@ class Ligands:
             "tigecycline",
             "doxycycline",
             "tetracycline",
-            "Chlortetracycline"
+            "chlortetracycline"
         ], [
             "azithromycin", # macrolides
             "erythromycin",
@@ -68,6 +68,10 @@ class Ligands:
             "chloramphenicol" # chlorampenicol
         ], [
             "linezolid" # oxazolidinones
+        ], [
+            "rifampicin"
+        ], [
+            "fosfomycin"
         ], [
             "amikacin", # aminoglycosides
             "tobramycin",
@@ -80,7 +84,7 @@ class Ligands:
         ], [
             "ciprofloxacin", # quinolones
             "levofloxacin",
-            "Moxifloxacin"
+            "moxifloxacin"
         ]
     ]
 
