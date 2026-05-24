@@ -67,7 +67,7 @@ class Targets:
                     ab_classes["macrolides"] +
                     ab_classes["chlorampennicol"]
                 ),
-            "1NJ1": (
+            "1NJI": (
                     ab_classes["macrolides"] +
                     ab_classes["chlorampennicol"]
                 ),
