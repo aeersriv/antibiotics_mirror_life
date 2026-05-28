@@ -3,12 +3,14 @@
 # GNU General Public License v 3 (GPLv3)
 #
 
-from rdkit import Chem
-from rdkit.Chem.rdchem import Mol
-from rdkit.Chem import AllChem
+from subprocess import run
 
 
-def ligand_prep(ligand: Mol, path: str):
+def ligand_prep(
+        ligand: str,
+        name: str,
+        path: str
+    ) -> str | None:
     """Prepare the structure of ligand.
 
     Args:
@@ -16,8 +18,36 @@ def ligand_prep(ligand: Mol, path: str):
         path (str): output path where to save the prepared
         ligand.
     """
+    pH: float = 7.0
+    PDBQT_name: str = f"{name}.pdbqt"
+    SDF_name: str = f"{name}.sdf"
 
-    mol = Chem.AddHs(ligand)
-    _ = AllChem.EmbedMolecule(mol)
-    AllChem.MMFFOptimizeMolecule(mol) # optimize molecule with MMFF94
-    Chem.MolToMolFile(mol, f"{path}.mol")
+    scrub: list[str] = [
+            "scrub.py",
+            ligand,
+            "-o",
+            f"{path}/{SDF_name}",
+            "--ph", str(pH),
+            "--skip_tautomer",
+            "--skip_acidbase"
+        ]
+    print(
+        f"Scrubing {name} with {' '.join(scrub)}"
+    )
+    proc = run(scrub)
+    if proc.returncode == 1:
+        return None
+
+    input_mk = f"{path}/{SDF_name}"
+    output_mk = f"{path}/{PDBQT_name}"
+    mkprepligand: list[str] = [
+            "mk_prepare_ligand.py",
+            "-i", input_mk,
+            "-o", output_mk
+        ]
+    print(
+        f"Preparing {name} with {' '.join(mkprepligand)}"
+    )
+    proc = run(mkprepligand)
+
+    return name
