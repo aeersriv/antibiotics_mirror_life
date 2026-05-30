@@ -12,7 +12,6 @@ class Ligands:
             "imipenem", # beta-lactams/carbapenems
             "meropenem",
             "doripenem",
-            "vancomycin", # glycopeptide
             "minocycline", # tetracyclines
             "tigecycline",
             "doxycycline",
@@ -52,8 +51,6 @@ class Ligands:
             "imipenem", # carbapenems
             "meropenem",
             "doripenem"
-        ], [
-            "vancomycin" # glycopeptide
         ], [
             "minocycline", # tetracyclines
             "tigecycline",

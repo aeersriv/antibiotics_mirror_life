@@ -14,7 +14,6 @@ class Targets:
                 "meropenem",
                 "doripenem"
             ],
-        "glycopeptide": ["vancomycin"],
         "tetracyclines": [
                 "minocycline",
                 "tigecycline",
@@ -61,7 +60,6 @@ class Targets:
 
     TARGETS: dict[str, list[str]] = {
             "6I1H": ab_classes["beta_lactams"],
-            "1FVM": ab_classes["glycopeptide"],
             "8CF1": ab_classes["tetracyclines"],
             "8CGD": (
                     ab_classes["macrolides"] +
@@ -78,7 +76,6 @@ class Targets:
             "8C41": ab_classes["quinolones"],
             "1FJG": ab_classes["aminoglycosides"],
             "3FL9": ab_classes["trimethoprim"],
-            "1TX2": ab_classes["sulfonamide"],
             "3TZF": ab_classes["sulfonamide"]
         }
 
