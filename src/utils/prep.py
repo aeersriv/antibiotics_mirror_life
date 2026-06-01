@@ -8,7 +8,7 @@ from subprocess import run
 
 def ligand_prep(
         ligand: str,
-        name: str,
+        cid: str,
         path: str
     ) -> str | None:
     """Prepare the structure of ligand.
@@ -18,36 +18,37 @@ def ligand_prep(
         path (str): output path where to save the prepared
         ligand.
     """
-    pH: float = 7.0
-    PDBQT_name: str = f"{name}.pdbqt"
-    SDF_name: str = f"{name}.sdf"
 
-    scrub: list[str] = [
+    pH: float = 7.4
+
+    scrub_cmd: list[str] = [
             "scrub.py",
             ligand,
             "-o",
-            f"{path}/{SDF_name}",
+            f"{path}/{cid}-scrub.sdf",
             "--ph", str(pH),
             "--skip_tautomer",
             "--skip_acidbase"
         ]
     print(
-        f"Scrubing {name} with {' '.join(scrub)}"
+        f"Scrubing {cid} with {' '.join(scrub_cmd)}"
     )
-    proc = run(scrub)
-    if proc.returncode == 1:
+    _scrub_cmd_ = run(scrub_cmd)
+
+    if _scrub_cmd_.returncode == 1:
         return None
 
-    input_mk = f"{path}/{SDF_name}"
-    output_mk = f"{path}/{PDBQT_name}"
-    mkprepligand: list[str] = [
+    mkprepligand_cmd: list[str] = [
             "mk_prepare_ligand.py",
-            "-i", input_mk,
-            "-o", output_mk
+            "-i", f"{path}/{cid}-scrub.sdf",
+            "-o", f"{path}/{cid}-prepped.pdbqt"
         ]
     print(
-        f"Preparing {name} with {' '.join(mkprepligand)}"
+        f"Preparing {cid} with {' '.join(mkprepligand_cmd)}"
     )
-    proc = run(mkprepligand)
+    _mkprepligand_cmd_ = run(mkprepligand_cmd)
 
-    return name
+    if _mkprepligand_cmd_.returncode == 1:
+        return None
+
+    return cid
