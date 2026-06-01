@@ -8,7 +8,7 @@ from subprocess import run
 
 def ligand_prep(
         ligand: str,
-        cid: str,
+        name: str,
         path: str
     ) -> str | None:
     """Prepare the structure of ligand.
@@ -25,13 +25,12 @@ def ligand_prep(
             "scrub.py",
             ligand,
             "-o",
-            f"{path}/{cid}-scrub.sdf",
+            f"{path}/scrub/{name}-scrub.sdf",
             "--ph", str(pH),
-            "--skip_tautomer",
-            "--skip_acidbase"
+            "--skip_tautomer"
         ]
     print(
-        f"Scrubing {cid} with {' '.join(scrub_cmd)}"
+        f"Scrubing {name} with {' '.join(scrub_cmd)}"
     )
     _scrub_cmd_ = run(scrub_cmd)
 
@@ -40,15 +39,15 @@ def ligand_prep(
 
     mkprepligand_cmd: list[str] = [
             "mk_prepare_ligand.py",
-            "-i", f"{path}/{cid}-scrub.sdf",
-            "-o", f"{path}/{cid}-prepped.pdbqt"
+            "-i", f"{path}/scrub/{name}-scrub.sdf",
+            "-o", f"{path}/{name}-prepped.pdbqt"
         ]
     print(
-        f"Preparing {cid} with {' '.join(mkprepligand_cmd)}"
+        f"Preparing {name} with {' '.join(mkprepligand_cmd)}"
     )
     _mkprepligand_cmd_ = run(mkprepligand_cmd)
 
     if _mkprepligand_cmd_.returncode == 1:
         return None
 
-    return cid
+    return name
