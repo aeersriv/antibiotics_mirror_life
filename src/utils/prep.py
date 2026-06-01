@@ -40,7 +40,8 @@ def ligand_prep(
     mkprepligand_cmd: list[str] = [
             "mk_prepare_ligand.py",
             "-i", f"{path}/scrub/{name}-scrub.sdf",
-            "-o", f"{path}/{name}-prepped.pdbqt"
+            "-o", f"{path}/{name}-prepped.pdbqt",
+            "--merge_these_atom_types"
         ]
     print(
         f"Preparing {name} with {' '.join(mkprepligand_cmd)}"
