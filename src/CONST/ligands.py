@@ -1,3 +1,8 @@
+#
+# Aërium Srīvus (c) 2025
+# GNU General Public License v 3 (GPLv3)
+#
+
 class Ligands:
     LIG_ARR: list[list[str]] = [
         [

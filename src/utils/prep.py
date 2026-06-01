@@ -1,5 +1,5 @@
 #
-# ÆĒR ŚRĪV (c) 2025
+# Aërium Srīvus (c) 2025
 # GNU General Public License v 3 (GPLv3)
 #
 

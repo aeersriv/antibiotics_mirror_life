@@ -1,7 +1,7 @@
 #
 # Original by Patrick Kunzmann
 # BSD 3 clause
-# Modified by ÆĒR ŚRĪV (c) 2025
+# Modified by Aërium Srīvus (c) 2025
 # GNU General Public License v3 (GPLv3)
 #
 

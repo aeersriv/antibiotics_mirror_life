@@ -2,7 +2,7 @@
 # Pedroni et al. (c) 2025
 # Creative Commons Attribution 4.0 International
 #
-# ÆĒR ŚRĪV (c) 2025
+# Aërium Srīvus (c) 2025
 # GNU General Public License v 3 (GPLv3)
 #
 # The original script was refactored such that it can be
