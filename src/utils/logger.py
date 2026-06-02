@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Self, Any
 
 from rich.logging import RichHandler
 
@@ -7,7 +8,7 @@ from rich.logging import RichHandler
 class Logger:
     """ Custom logger. """
 
-    def __init__(self) -> None:
+    def __init__(self: Self) -> None:
         logging.basicConfig(
             format="%(message)s",
             level=logging.INFO,
@@ -34,28 +35,31 @@ class Logger:
         self.log.addHandler(file_log)
 
 
-    def crit(self, exception_: str, msg_: str) -> None:
+    def crit(self: Self, exception_: Any, msg_: str) -> None:
         """Critical errors.
 
         Args:
+            exception_ -- stderr from raised exception.
             msg_ -- message to be logged.
         """
 
         self.log.critical("%s: %s", exception_, msg_)
 
-    def err(self, exception_: str, msg_: str) -> None:
+    def err(self, exception_: Any, msg_: str) -> None:
         """Minor but tolerable errors.
 
         Args:
+            exception_ -- stderr from raised exception.
             msg_ -- message to be logged.
         """
 
         self.log.error("%s: %s", exception_, msg_)
 
-    def info(self, exception_: str, msg_: str) -> None:
+    def info(self, exception_: Any, msg_: str) -> None:
         """Likely important information.
 
         Args:
+            exception_ -- stderr from raised exception.
             msg_ -- message to be logged.
         """
 
