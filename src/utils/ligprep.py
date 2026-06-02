@@ -6,6 +6,7 @@
 from subprocess import run
 
 from src.utils.logger import Logger
+from typing_extensions import Self
 
 def ligand_prep(
         lig_path: str,

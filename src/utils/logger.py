@@ -3,7 +3,7 @@ from datetime import datetime
 from os import mkdir, remove
 from os.path import isdir, exists
 from pathlib import Path
-from typing import Self, Any
+from typing_extensions import Self, Any
 
 from rich.logging import RichHandler
 
