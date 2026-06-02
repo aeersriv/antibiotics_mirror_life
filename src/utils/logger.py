@@ -1,5 +1,5 @@
 import logging
-from os import mkdir
+from os import mkdir, remove
 from os.path import isdir, exists
 from pathlib import Path
 from typing import Self, Any
@@ -39,8 +39,10 @@ class Logger:
                 raise SystemExit from os_err_
 
         if exists(log_filepath):
-            self.info(f"{log_filepath} already exists!")
-            raise SystemExit
+            self.info(
+                f"{log_filepath} already exists! Removing file ..."
+            )
+            remove(log_filepath)
 
         file_log: logging.FileHandler = logging.FileHandler(
                 filename=log_filepath
