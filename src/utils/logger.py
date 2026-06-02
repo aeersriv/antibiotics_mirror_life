@@ -34,18 +34,29 @@ class Logger:
         self.log.addHandler(file_log)
 
 
-    def logger(self, exception_: str, msg_: str) -> None:
-        """Log the proccesses using passed message and exception_ variable.
+    def crit(self, msg_: str) -> None:
+        """Critical errors.
 
         Args:
-            exception_ -- determines what type of log level to use
             msg_ -- message to be logged.
         """
 
-        match exception_:
-            case "E": # for major error
-                self.log.critical("%s", msg_)
-            case "e":
-                self.log.error("%s", msg_)
-            case "I": # to print information in the terminal
-                self.log.info("%s", msg_)
+        self.log.critical("%s", msg_)
+
+    def err(self, msg_: str) -> None:
+        """Minor but tolerable errors.
+
+        Args:
+            msg_ -- message to be logged.
+        """
+
+        self.log.error("%s", msg_)
+
+    def info(self, msg_: str) -> None:
+        """Likely important information.
+
+        Args:
+            msg_ -- message to be logged.
+        """
+
+        self.log.info("%s", msg_)
