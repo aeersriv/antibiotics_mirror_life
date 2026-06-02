@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from os import mkdir, remove
 from os.path import isdir, exists
 from pathlib import Path
@@ -22,7 +23,6 @@ class Logger:
                     )
                 ]
         )
-
         self.log: logging.Logger = logging.getLogger("rich")
 
         BASE_PATH: Path = Path("./logs/")
@@ -53,6 +53,11 @@ class Logger:
             logging.Formatter("%(levelname)s %(message)s")
         )
         self.log.addHandler(file_log)
+
+        self.info(
+            "Setup of logger complete, started "
+            f"<{log_file_}> {str(datetime.now())}"
+        )
 
 
     def crit(self: Self, exception_: Any, msg_: str) -> None:
