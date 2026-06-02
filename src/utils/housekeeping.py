@@ -1,7 +1,13 @@
 from os import mkdir
 from os.path import isdir
 
+from importlib.metadata import version
 from src.utils.logger import Logger
+
+
+def log_pkg_ver(pkgimports: list[str], log_: Logger) -> None:
+    for pkg_ in pkgimports:
+        log_.info(f"Import {pkg_} v {version(pkg_)}")
 
 
 def fix_dir(path_arr: list[str], log_: Logger) -> None:
@@ -15,7 +21,7 @@ def fix_dir(path_arr: list[str], log_: Logger) -> None:
 
     for dir_ in missing_path:
         try:
-            # mkdir(dir_)
+            mkdir(dir_)
             missing_path.remove(dir_)
         except OSError as err_:
             log_.crit(
