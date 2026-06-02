@@ -1,4 +1,6 @@
 import logging
+from os import mkdir
+from os.path import isdir, exists
 from pathlib import Path
 from typing import Self, Any
 
@@ -8,7 +10,7 @@ from rich.logging import RichHandler
 class Logger:
     """ Custom logger. """
 
-    def __init__(self: Self) -> None:
+    def __init__(self: Self, log_file_: str) -> None:
         logging.basicConfig(
             format="%(message)s",
             level=logging.INFO,
@@ -23,9 +25,25 @@ class Logger:
 
         self.log: logging.Logger = logging.getLogger("rich")
 
-        BASE_PATH: Path = Path(".")
+        BASE_PATH: Path = Path("./logs/")
+        log_filepath: Path = BASE_PATH / f"{log_file_}.log"
+
+        if not isdir(BASE_PATH):
+            self.info(
+                f"Missing log dir {BASE_PATH}, creating ..."
+            )
+            try:
+                mkdir(BASE_PATH)
+            except OSError as os_err_:
+                self.crit(os_err_, f"Cannot create {BASE_PATH}.")
+                raise SystemExit from os_err_
+
+        if exists(log_filepath):
+            self.info(f"{log_filepath} already exists!")
+            raise SystemExit
+
         file_log: logging.FileHandler = logging.FileHandler(
-                filename=f"{BASE_PATH}/simtex.log"
+                filename=log_filepath
             )
 
         file_log.setLevel(logging.INFO)
