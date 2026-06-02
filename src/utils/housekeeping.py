@@ -25,16 +25,30 @@ def check_dir(path_arr: list[str], log_: Logger) -> list[str]:
 
     return missing_path
 
+
+def fix_dir(path_arr: list[str], log_: Logger) -> None:
+
+    missing_path: list[str] = check_dir(path_arr, log_)
+    if not missing_path:
+        return None
+
+    created_dir: list[str] = []
     for dir_ in missing_path:
         try:
+            log_.info(f"Trying to create dir: {dir_}")
             mkdir(dir_)
-            missing_path.remove(dir_)
         except OSError as err_:
             log_.crit(
                 err_, f"Cannot create DIR: {dir_}"
             )
+        else:
+            created_dir.append(dir_)
 
-    if missing_path:
-        log_.info(
-            f"Unable to create the ff. DIR: {missing_path}."
+    failed_dir: list[str] = list(
+            set(missing_path)^set(created_dir)
         )
+    if failed_dir:
+        log_.info(
+            f"Unable to create the ff. DIR: {failed_dir}."
+        )
+
