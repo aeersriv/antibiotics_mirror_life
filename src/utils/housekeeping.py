@@ -1,4 +1,5 @@
 from os import mkdir
+from platform import python_version
 from os.path import isdir
 from shutil import rmtree
 
@@ -14,6 +15,7 @@ def log_pkg_ver(pkgimports: list[str], log_: Logger) -> None:
         log_ (Logger): Logger() instance.
     """
 
+    log_.info(f"Python v {python_version()}")
     for pkg_ in pkgimports:
         log_.info(f"Import {pkg_} v {version(pkg_)}")
 
