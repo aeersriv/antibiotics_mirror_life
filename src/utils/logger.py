@@ -34,29 +34,29 @@ class Logger:
         self.log.addHandler(file_log)
 
 
-    def crit(self, msg_: str) -> None:
+    def crit(self, exception_: str, msg_: str) -> None:
         """Critical errors.
 
         Args:
             msg_ -- message to be logged.
         """
 
-        self.log.critical("%s", msg_)
+        self.log.critical("%s: %s", exception_, msg_)
 
-    def err(self, msg_: str) -> None:
+    def err(self, exception_: str, msg_: str) -> None:
         """Minor but tolerable errors.
 
         Args:
             msg_ -- message to be logged.
         """
 
-        self.log.error("%s", msg_)
+        self.log.error("%s: %s", exception_, msg_)
 
-    def info(self, msg_: str) -> None:
+    def info(self, exception_: str, msg_: str) -> None:
         """Likely important information.
 
         Args:
             msg_ -- message to be logged.
         """
 
-        self.log.info("%s", msg_)
+        self.log.info("%s: %s", exception_, msg_)
