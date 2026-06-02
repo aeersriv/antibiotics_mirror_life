@@ -55,12 +55,11 @@ class Logger:
 
         self.log.error("%s: %s", exception_, msg_)
 
-    def info(self, exception_: Any, msg_: str) -> None:
+    def info(self, msg_: str) -> None:
         """Likely important information.
 
         Args:
-            exception_ -- stderr from raised exception.
             msg_ -- message to be logged.
         """
 
-        self.log.info("%s: %s", exception_, msg_)
+        self.log.info("%s", msg_)
