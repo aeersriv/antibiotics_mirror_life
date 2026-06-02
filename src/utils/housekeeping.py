@@ -52,3 +52,20 @@ def fix_dir(path_arr: list[str], log_: Logger) -> None:
             f"Unable to create the ff. DIR: {failed_dir}."
         )
 
+
+def remove_prev_data(path_arr: list[str], log_: Logger) -> None:
+
+    for dir_ in path_arr:
+        if not isdir(dir_):
+            continue
+
+        try:
+            log_.info(
+                f"Removing {dir_} and its contents ..."
+            )
+            rmtree(dir_)
+        except OSError as os_err_:
+            log_.err(
+                os_err_,
+                f"Error encountered during removal of {dir_} ..."
+            )
