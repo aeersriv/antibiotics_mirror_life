@@ -5,36 +5,43 @@
 
 from subprocess import run
 
+from src.utils.logger import Logger
 
 def ligand_prep(
-        ligand: str,
+        lig_path: str,
         name: str,
-        path: str
+        path: str,
+        log_: Logger
     ) -> str | None:
-    """Prepare the structure of ligand.
+    """_summary_
 
     Args:
-        ligand (Mol): rdkit.Chem.rdchem.Mol instance of ligand.
-        path (str): output path where to save the prepared
-        ligand.
+        lig_path (str): Path of the ligand SDF.
+        name (str): File name for the scrubbed and prepped ligand.
+        path (str): Path where to save the ligand.
+        logger (Logger): Logger file.
+
+    Returns:
+        str | None: A successful preparation will return the name of
+            the ligand, whilst a failed will return None.
     """
+
 
     pH: float = 7.4
 
     scrub_cmd: list[str] = [
             "scrub.py",
-            ligand,
+            lig_path,
             "-o",
             f"{path}/scrub/{name}-scrub.sdf",
             "--ph", str(pH),
             "--skip_tautomer"
         ]
-    print(
-        f"Scrubing {name} with {' '.join(scrub_cmd)}"
-    )
+    log_.info(f"Scrubing {name} with {' '.join(scrub_cmd)}")
     _scrub_cmd_ = run(scrub_cmd)
 
     if _scrub_cmd_.returncode == 1:
+        log_.info(f"Failed to run MolScrub on {name}")
         return None
 
     mkprepligand_cmd: list[str] = [
@@ -42,8 +49,9 @@ def ligand_prep(
             "-i", f"{path}/scrub/{name}-scrub.sdf",
             "-o", f"{path}/{name}-prepped.pdbqt"
         ]
-    print(
-        f"Preparing {name} with {' '.join(mkprepligand_cmd)}"
+    log_.info(
+        "Running mk_prepapre_ligand.py on "
+        f"{name} with {' '.join(mkprepligand_cmd)}"
     )
     _mkprepligand_cmd_ = run(mkprepligand_cmd)
 
