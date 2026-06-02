@@ -10,14 +10,20 @@ def log_pkg_ver(pkgimports: list[str], log_: Logger) -> None:
         log_.info(f"Import {pkg_} v {version(pkg_)}")
 
 
-def fix_dir(path_arr: list[str], log_: Logger) -> None:
+def check_dir(path_arr: list[str], log_: Logger) -> list[str]:
     missing_path: list[str] = []
     for dir_ in path_arr:
-        if not isdir(dir_):
-            missing_path.append(dir_)
+        if isdir(dir_):
+            log_.info(
+                f"Skipping: {dir_}, path exists ..."
+            )
+            continue
         log_.info(
-            f"Skipping: {dir_}, path exists ..."
+            f"{dir_} is missing, include to the list ..."
         )
+        missing_path.append(dir_)
+
+    return missing_path
 
     for dir_ in missing_path:
         try:
