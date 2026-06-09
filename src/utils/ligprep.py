@@ -16,7 +16,7 @@ class LigPrep:
         self.log_: Logger = log_
 
 
-    def ligand_prep(
+    def ligand_prep_invidual(
             self: Self,
             lig_path: str,
             name: str,
@@ -68,3 +68,54 @@ class LigPrep:
             return None
 
         return name
+    def ligand_prep_batch(
+            self: Self,
+            smi_file: str,
+            out_file: str,
+            path: str
+        ) -> None:
+        """Batch preparation of ligand.
+
+        Args:
+            smi_path (str): Path of smiles for preparation.
+            out_path (str): Path for saving of prepared ligands.
+        """
+        scrub: str = f"{path}/scrubbed"
+        prepd: str = f"{path}/prepped"
+        fix_dir([scrub, prepd], self.log_)
+
+        pH: float = 7.4
+        scrub_out: str = f"{smi_file}-scrubbed.sdf"
+
+        scrub_cmd: list[str] = [
+                "scrub.py",
+                f"{path}/{smi_file}",
+                "-o",
+                f"{scrub}/{scrub_out}",
+                f"--ph {pH}",
+                "--skip_tautomer"
+            ]
+        self.log_.info(
+            f"Batch scrubing {smi_file} with {' '.join(scrub_cmd)}"
+        )
+        _scrub_cmd_ = run(scrub_cmd)
+
+        if _scrub_cmd_.returncode == 0:
+            self.log_.info(
+                f"Failed to run batch scrubbing of {smi_file}"
+            )
+            raise SystemExit
+
+        mkprepligand_cmd: list[str] = [
+                "mk_prepare_ligand.py",
+                "-i", f"{scrub}/{scrub_out}",
+                f"--multimol_outdir {prepd}"
+            ]
+        self.log_.info(
+            f"Batch mk_prepapre_ligand.py on {scrub}"
+            f"/{scrub_out} with {' '.join(mkprepligand_cmd)}"
+        )
+        _mkprepligand_cmd_ = run(mkprepligand_cmd)
+
+        if _mkprepligand_cmd_.returncode == 0:
+            raise SystemExit
