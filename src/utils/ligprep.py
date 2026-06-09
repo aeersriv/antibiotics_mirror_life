@@ -79,18 +79,19 @@ class LigPrep:
             smi_path (str): Path of smiles for preparation.
             out_path (str): Path for saving of prepared ligands.
         """
-        scrub: str = f"{path}/scrubbed"
-        prepd: str = f"{path}/prepped"
-
         pH: float = 7.4
-        scrub_out: str = f"{smi_file}-scrubbed.sdf"
+
+        scrub: str = f"{path}/prepped/scrub"
+        prepd: str = f"{path}/prepped"
+        smi_filename: str = smi_file.split("/")[-1]
+        scrub_out: str = f"{smi_filename}-scrubbed.sdf"
 
         scrub_cmd: list[str] = [
                 "scrub.py",
-                f"{path}/{smi_file}",
+                smi_file,
                 "-o",
                 f"{scrub}/{scrub_out}",
-                f"--ph {pH}",
+                f"--ph={pH}",
                 "--skip_tautomer"
             ]
         self.log_.info(
