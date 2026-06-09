@@ -34,8 +34,6 @@ class LigPrep:
             str | None: A successful preparation will return the name of
                 the ligand, whilst a failed will return None.
         """
-
-
         pH: float = 7.4
 
         scrub_cmd: list[str] = [
@@ -49,7 +47,7 @@ class LigPrep:
         self.log_.info(f"Scrubing {name} with {' '.join(scrub_cmd)}")
         _scrub_cmd_ = run(scrub_cmd)
 
-        if _scrub_cmd_.returncode == 1:
+        if _scrub_cmd_.returncode == 0:
             self.log_.info(f"Failed to run MolScrub on {name}")
             return None
 
@@ -64,10 +62,11 @@ class LigPrep:
         )
         _mkprepligand_cmd_ = run(mkprepligand_cmd)
 
-        if _mkprepligand_cmd_.returncode == 1:
+        if _mkprepligand_cmd_.returncode == 0:
             return None
 
         return name
+
     def ligand_prep_batch(
             self: Self,
             smi_file: str,
@@ -82,7 +81,6 @@ class LigPrep:
         """
         scrub: str = f"{path}/scrubbed"
         prepd: str = f"{path}/prepped"
-        fix_dir([scrub, prepd], self.log_)
 
         pH: float = 7.4
         scrub_out: str = f"{smi_file}-scrubbed.sdf"
